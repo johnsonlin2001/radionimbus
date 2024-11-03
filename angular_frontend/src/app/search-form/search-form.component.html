@@ -1,0 +1,92 @@
+<div class="container d-flex mt-3">   
+    <form [formGroup]="form" class="weather_search_form col-md-12 col-12 col-lg-12 mx-auto px-2">
+        <h1 style="text-align: center;">Weather Search ⛅</h1>
+        <div class="d-flex mb-1 flex-column flex-lg-row align-items-lg-center px-lg-5">
+            <label for="streetfield" style="width: 25%;" class="ms-1 ms-lg-5">Street<span class="required_star">*</span></label>
+            <input type="text" class="form-control flex-grow-1 me-lg-5" id="streetfield" formControlName="streetFieldControl" [ngClass]="{'invalid': form.get('streetFieldControl')?.invalid && (form.get('streetFieldControl')?.touched || submitted)}">
+        </div>
+        <div *ngIf="form.get('streetFieldControl')?.invalid && (form.get('streetFieldControl')?.touched || submitted)" class="validation_message">
+            Please enter a valid street
+        </div>
+        <div class="d-flex mb-1 flex-column flex-lg-row align-items-lg-center px-lg-5">
+            <label for="cityfield" style="width: 25%;" class="ms-1 ms-lg-5">City<span class="required_star">*</span></label>
+            <input type="text" matInput formControlName="cityFieldControl" [matAutocomplete]="auto" class="form-control flex-grow-1 me-lg-5" [ngClass]="{'invalid': form.get('cityFieldControl')?.invalid && (form.get('cityFieldControl')?.touched || submitted)}"/>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="handleCitySelect($event)">
+                <mat-option *ngFor="let place of suggestions" [value]="place.city">
+                {{ place.city }}
+                </mat-option>
+            </mat-autocomplete>
+        </div>
+        <div *ngIf="form.get('cityFieldControl')?.invalid && (form.get('cityFieldControl')?.touched || submitted)" class="validation_message">
+            Please enter a valid city
+        </div>
+        <div class="d-flex mb-1 flex-column flex-lg-row align-items-lg-center px-lg-5">
+            <label for="stateDropdown" style="width: 25%;" class="ms-1 ms-lg-5">State<span class="required_star">*</span></label>
+            <select class="form-select" id="stateDropdown" aria-label="State select dropdown" matInput formControlName="stateFieldControl">
+                <option selected>Select your state</option>
+                <option value="AL">Alabama</option>
+                <option value="AK">Alaska</option>
+                <option value="AZ">Arizona</option>
+                <option value="AR">Arkansas</option>
+                <option value="CA">California</option>
+                <option value="CO">Colorado</option>
+                <option value="CT">Connecticut</option>
+                <option value="DE">Delaware</option>
+                <option value="FL">Florida</option>
+                <option value="GA">Georgia</option>
+                <option value="HI">Hawaii</option>
+                <option value="ID">Idaho</option>
+                <option value="IL">Illinois</option>
+                <option value="IN">Indiana</option>
+                <option value="IA">Iowa</option>
+                <option value="KS">Kansas</option>
+                <option value="KY">Kentucky</option>
+                <option value="LA">Louisiana</option>
+                <option value="ME">Maine</option>
+                <option value="MD">Maryland</option>
+                <option value="MA">Massachusetts</option>
+                <option value="MI">Michigan</option>
+                <option value="MN">Minnesota</option>
+                <option value="MS">Mississippi</option>
+                <option value="MO">Missouri</option>
+                <option value="MT">Montana</option>
+                <option value="NE">Nebraska</option>
+                <option value="NV">Nevada</option>
+                <option value="NH">New Hampshire</option>
+                <option value="NJ">New Jersey</option>
+                <option value="NM">New Mexico</option>
+                <option value="NY">New York</option>
+                <option value="NC">North Carolina</option>
+                <option value="ND">North Dakota</option>
+                <option value="OH">Ohio</option>
+                <option value="OK">Oklahoma</option>
+                <option value="OR">Oregon</option>
+                <option value="PA">Pennsylvania</option>
+                <option value="RI">Rhode Island</option>
+                <option value="SC">South Carolina</option>
+                <option value="SD">South Dakota</option>
+                <option value="TN">Tennessee</option>
+                <option value="TX">Texas</option>
+                <option value="UT">Utah</option>
+                <option value="VT">Vermont</option>
+                <option value="VA">Virginia</option>
+                <option value="WA">Washington</option>
+                <option value="WV">West Virginia</option>
+                <option value="WI">Wisconsin</option>
+                <option value="WY">Wyoming</option>
+            </select>
+        </div>
+        <hr style="border: 1px solid black; width: 100%;" />
+        <div class="d-flex justify-content-center">
+            <label class="form-check-label me-3" for="auto_detect_checkbox">Autodetect Location<span class="required_star">*</span></label>
+            <input type="checkbox" class="form-check-input me-1" id="auto_detect_checkbox" formControlName="autoDetectControl">
+            <label class="form-check-label" for="auto_detect_checkbox">Current Location</label>
+        </div>
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary me-3" (click)="handleSubmit($event)" [disabled]="!form.valid"> <i class="bi bi-search"></i>Submit</button>
+            <button type="button" class="btn btn-secondary" style="background-color: white; color: gray;" (click)="handleClear()"><i class="bi bi-list-nested"></i>Clear</button>
+            
+        </div>   
+    </form>
+</div>
+

@@ -1,0 +1,12 @@
+.invalid {
+    border: 1px solid red;
+  }
+
+  @media (min-width: 992px){
+    .validation_message{
+      margin-left: 24.5%;
+      color: red;
+      font-size: 0.9em;
+    }
+  }
+  

@@ -1,0 +1,32 @@
+/* You can add global styles to this file, and also import other style files */
+.weather_search_form{
+    background-color: rgb(221, 221, 221);
+}
+
+.body{
+    margin: 0px;
+}
+
+.required_star{
+    color: rgb(254, 154, 154);
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.label_margin {
+    margin-left: 8rem; 
+}
+
+@media (min-width: 992px) {
+    #stateDropdown {
+        width: 330px !important;
+        margin-left: -5rem !important;
+    }
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.is-invalid {
+    border: 1px solid red;
+  }
