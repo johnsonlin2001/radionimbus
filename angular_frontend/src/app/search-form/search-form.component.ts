@@ -97,6 +97,10 @@ export class SearchFormComponent implements OnInit {
       const latitude = location[0];
       const longitude = location[1];
       let coordinates = new URLSearchParams({lat: latitude, long: longitude});
+      const weatherresponse = await fetch(`http://localhost:8080/fetchweatherdata?lat=${latitude}&long=${longitude}`, {method: 'get'});
+      const weatherdata = await weatherresponse.json();
+      const dailydata = weatherdata["daily_data"];
+      console.log(dailydata);
     }else{
       let street = this.form.get("streetFieldControl")?.value;
       let city = this.form.get("cityFieldControl")?.value;
@@ -112,8 +116,10 @@ export class SearchFormComponent implements OnInit {
       const latitude = location["lat"];
       const longitude = location["lng"];
       let coordinates = new URLSearchParams({lat: latitude, long: longitude});
-      console.log(latitude);
-      console.log(longitude);
+      const weatherresponse = await fetch(`http://localhost:8080/fetchweatherdata?lat=${latitude}&long=${longitude}`, {method: 'get'});
+      const weatherdata = await weatherresponse.json();
+      const dailydata = weatherdata["daily_data"];
+      console.log(dailydata);
     }
 
   }

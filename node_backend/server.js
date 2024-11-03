@@ -32,6 +32,24 @@ app.get('/places', async (req, res) => {
     }
   });
 
+  app.get("/fetchweatherdata", async (req, res) => {
+    const lat = req.query.lat;
+    const long = req.query.long;
+  
+    console.log('Latitude:', lat);
+    console.log('Longitude:', long);
+  
+  
+    let apikey= "fCWjETWnRJRgHiOjCyTyE9C9k0ymlCVK";
+    const response = await axios.get(
+      `https://api.tomorrow.io/v4/timelines?location=${lat},${long}&fields=temperature,temperatureApparent,temperatureMin,temperatureMax,windSpeed,windDirection,humidity,pressureSeaLevel,uvIndex,weatherCode,precipitationProbability,precipitationType,sunriseTime,sunsetTime,visibility,moonPhase,cloudCover&timesteps=1d&units=imperial&timezone=America/Los_Angeles&apikey=${apikey}`
+    );
+  
+  
+    res.json({ daily_data: response.data });
+  
+  })
+
 // Listen to the App Engine-specified port, or 8080 otherwise
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
