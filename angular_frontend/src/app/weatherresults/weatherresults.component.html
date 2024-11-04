@@ -1,0 +1,47 @@
+<h2>Forecast at {{location}}</h2>
+
+<div class="d-flex flex-row justify-content-end align-items-center">
+<button type="button" class="btn" (click)="handleFavorite()" style="border: 1px solid black; padding: 2px 4px 2px 4px; ">
+    <span style="position: relative; display: inline-block;">
+        <i class="bi-star" 
+           style="position: absolute; color: black; top: 0; left: 0; font-size: 30px;">
+        </i>
+        <i [ngClass]="isFavorite ? 'bi-star-fill' : 'bi-star'"
+           [ngStyle]="{'color': isFavorite ? 'yellow' : 'white', 'font-size': '30px'}">
+        </i>
+      </span>
+</button>
+<div style="font-size: 1.5rem; border-bottom: 1px solid blue; padding-bottom: 1px;">Details</div>
+<i class="bi bi-chevron-right" style="font-size: 1.5rem; font-weight: 400"></i>
+</div>
+
+<div class="tab_selectors d-flex flex-row justify-content-end align-items-center">
+    <p class="me-3" (click)="handleTabClick('day')" [class.current]="currentTab === 'day'">Day View</p>
+    <p class="me-3" (click)="handleTabClick('chart')" [class.current]="currentTab === 'chart'">Daily Temp. Chart</p>
+    <p (click)="handleTabClick('meteogram')" [class.current]="currentTab === 'meteogram'">Meteogram</p>
+</div>
+
+<div class="tab-content">
+    <div *ngIf="currentTab === 'day'">
+        <div class="table-responsive">
+            <table class="table table-hover weather_table">
+                <thead>
+                <tr>
+                    <th *ngFor="let heading of weatherHeadings" class="weather_header">
+                    {{ heading }}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Table rows will go here in the future -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="currentTab === 'chart'">
+      <p>chart</p>
+    </div>
+    <div *ngIf="currentTab === 'meteogram'">
+      <div>meteogram</div>
+    </div>
+</div>

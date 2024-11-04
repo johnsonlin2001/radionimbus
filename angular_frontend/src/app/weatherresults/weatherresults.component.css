@@ -1,0 +1,47 @@
+.tab_selectors {
+    display: flex;
+    border-bottom: 1px solid #ccc; 
+  }
+
+.tab_selectors p {
+margin: 0;
+padding: 10px 15px;
+cursor: pointer;
+border-bottom: none; 
+color: #007bff;
+font-weight: bold;
+}
+
+
+.tab_selectors p.current {
+background-color: white; 
+color: #333; 
+cursor: pointer;
+border-top: 1px solid #ccc; 
+border-left: 1px solid #ccc;
+border-right: 1px solid #ccc;
+border-radius: 1px;
+border-bottom: none; 
+border-radius: 5px 5px 0 0;
+margin-bottom: -1px; 
+z-index: 1;
+}
+
+@media (max-width: 576px) {
+    .tab_selectors p.active {
+        margin-bottom: -10px;
+
+
+    }
+}
+
+.weather_table {
+    border-top: none; 
+  }
+  
+  .weather_table th,
+  .weather_table td {
+    border-top: none;
+    border-left: none;
+    border-right: none; 
+  }

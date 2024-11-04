@@ -84,9 +84,32 @@
         </div>
         <div class="d-flex justify-content-center">
             <button type="submit" class="btn btn-primary me-3" (click)="handleSubmit($event)" [disabled]="!form.valid"> <i class="bi bi-search"></i>Submit</button>
-            <button type="button" class="btn btn-secondary" style="background-color: white; color: gray;" (click)="handleClear()"><i class="bi bi-list-nested"></i>Clear</button>
-            
+            <button type="button" class="btn btn-secondary" style="background-color: white; color: gray;" (click)="handleClear()"><i class="bi bi-list-nested"></i>Clear</button>    
         </div>   
     </form>
+     
+</div>
+<div class="d-flex justify-content-center mt-3">
+    <button type="button" class="btn" [ngClass]="{'btn-primary': currentTab === 'results', 'btn-secondary-tab': currentTab !== 'results'}" (click)="currentTab = 'results'">
+        Results
+    </button>
+    <button type="button" class="btn ms-2" [ngClass]="{'btn-primary': currentTab === 'favorites', 'btn-secondary-tab': currentTab !== 'favorites'}" (click)="currentTab = 'favorites'">
+        Favorites
+    </button>
 </div>
 
+<div class="container mt-3">
+    <div class="col-md-12 col-12 col-lg-12 mx-auto px-2">
+        <div *ngIf="currentTab === 'results'">
+            <h3>Results</h3>
+            <div *ngIf="weatherDataReady">
+                <app-weatherresults [location]="location"></app-weatherresults>
+            </div>
+        </div>
+
+        <div *ngIf="currentTab === 'favorites'">
+            <h3>Favorites</h3>
+            <!-- Favorites list to be implemented here -->
+        </div>
+    </div>
+</div>

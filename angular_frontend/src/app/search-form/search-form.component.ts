@@ -10,6 +10,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { CommonModule, formatCurrency } from '@angular/common';
 import { CitysearchService } from "../citysearch.service"
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { WeatherresultsComponent } from '../weatherresults/weatherresults.component';
 
 
 
@@ -23,6 +24,7 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
     MatInputModule,
     MatOptionModule,
     CommonModule,
+    WeatherresultsComponent
   ],
   templateUrl: './search-form.component.html',
   styleUrl: './search-form.component.css'
@@ -39,6 +41,8 @@ export class SearchFormComponent implements OnInit {
   }
   
   suggestions: any[] = [];
+  currentTab: string = "results";
+  weatherDataReady = false;
 
   validator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -48,6 +52,17 @@ export class SearchFormComponent implements OnInit {
   }
 
   submitted = false;
+
+  currentTemp!: number;
+  weatherCondition!: string;
+  weatherIcon!: string;
+  humidity!: string;
+  pressure!: string;
+  windSpeed!: string;
+  visibility!: string;
+  cloudCover!: string;
+  uvIndex!: number;
+  location!: string;
 
   ngOnInit(): void {
 
@@ -92,7 +107,7 @@ export class SearchFormComponent implements OnInit {
       const ip_access_token = "baabb679471b9e";
       const ipresponse = await fetch(`https://ipinfo.io/json?token=${ip_access_token}`, {method: 'get'});
       const ipinfo = await ipresponse.json();
-      const formatted_address = ipinfo["city"] + ", " + ipinfo["region"] + ", " + ipinfo["country"];
+      const formatted_address = ipinfo["city"] + ", " + ipinfo["region"];
       const location = ipinfo["loc"].split(",");
       const latitude = location[0];
       const longitude = location[1];
@@ -101,6 +116,8 @@ export class SearchFormComponent implements OnInit {
       const weatherdata = await weatherresponse.json();
       const dailydata = weatherdata["daily_data"];
       console.log(dailydata);
+      this.weatherDataReady = true;
+      this.location = formatted_address;
     }else{
       let street = this.form.get("streetFieldControl")?.value;
       let city = this.form.get("cityFieldControl")?.value;
@@ -120,6 +137,8 @@ export class SearchFormComponent implements OnInit {
       const weatherdata = await weatherresponse.json();
       const dailydata = weatherdata["daily_data"];
       console.log(dailydata);
+      this.weatherDataReady = true;
+      this.location = city + ", " + state;
     }
 
   }
@@ -142,5 +161,8 @@ export class SearchFormComponent implements OnInit {
       streetFieldControl: '',
       autoDetectControl: false
     });
+
+    this.currentTab = "results";
+    this.weatherDataReady = false;
   }
 }
