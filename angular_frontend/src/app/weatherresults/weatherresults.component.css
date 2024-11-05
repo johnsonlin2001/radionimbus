@@ -39,9 +39,16 @@ z-index: 1;
     border-top: none; 
   }
   
-  .weather_table th,
-  .weather_table td {
-    border-top: none;
-    border-left: none;
-    border-right: none; 
-  }
+.weather_table th,
+.weather_table td {
+border-top: none;
+border-left: none;
+border-right: none; 
+}
+
+.date_row{
+text-decoration: underline;
+text-decoration-color: blue;
+color: blue;
+}
+    

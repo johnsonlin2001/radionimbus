@@ -15,7 +15,7 @@
 <i class="bi bi-chevron-right" style="font-size: 1.5rem; font-weight: 400"></i>
 </div>
 
-<div class="tab_selectors d-flex flex-row justify-content-end align-items-center">
+<div class="tab_selectors d-flex flex-row justify-content-end align-items-center mt-3">
     <p class="me-3" (click)="handleTabClick('day')" [class.current]="currentTab === 'day'">Day View</p>
     <p class="me-3" (click)="handleTabClick('chart')" [class.current]="currentTab === 'chart'">Daily Temp. Chart</p>
     <p (click)="handleTabClick('meteogram')" [class.current]="currentTab === 'meteogram'">Meteogram</p>
@@ -24,7 +24,7 @@
 <div class="tab-content">
     <div *ngIf="currentTab === 'day'">
         <div class="table-responsive">
-            <table class="table table-hover weather_table">
+            <table class="table table-responsive table-hover weather_table">
                 <thead>
                 <tr>
                     <th *ngFor="let heading of weatherHeadings" class="weather_header">
@@ -33,15 +33,27 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Table rows will go here in the future -->
+                    <tr *ngFor="let day of dailydata['data']['timelines'][0]['intervals']; let i = index">
+                        <td class="align-middle">{{ i + 1 }}</td>
+                        <td class="date_row align-middle">{{ formatDate(day['startTime']) }}</td>
+                        <td class="align-middle">
+                            <div class="weather_status_div">
+                                <img [src]="getWeatherImage(day['values']['weatherCode'])" style="width: 45px; height: auto;">
+                                <span>{{ getStatus(day['values']['weatherCode']) }}</span>
+                            </div>
+                        </td>
+                        <td class="align-middle">{{ day['values']['temperatureMax'] }}</td>
+                        <td class="align-middle">{{ day['values']['temperatureMin'] }}</td>
+                        <td class="align-middle">{{ day['values']['windSpeed'] }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
     <div *ngIf="currentTab === 'chart'">
-      <p>chart</p>
+      <app-tempchart [temperatureData]="getTemperatureData(dailydata)"></app-tempchart>
     </div>
     <div *ngIf="currentTab === 'meteogram'">
-      <div>meteogram</div>
+      <app-meteogram [hourlyTempData]="getHourlyTempData(hourlydata)['hourlyTempData']" [hourlyHumData]="getHourlyTempData(hourlydata)['hourlyHumData']" [hourlyWindData]="getHourlyTempData(hourlydata)['hourlyWindData']" [hourlyAirData]="getHourlyTempData(hourlydata)['hourlyAirData']"></app-meteogram>
     </div>
 </div>

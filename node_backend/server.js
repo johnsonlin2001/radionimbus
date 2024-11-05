@@ -35,18 +35,20 @@ app.get('/places', async (req, res) => {
   app.get("/fetchweatherdata", async (req, res) => {
     const lat = req.query.lat;
     const long = req.query.long;
-  
-    console.log('Latitude:', lat);
-    console.log('Longitude:', long);
+
   
   
     let apikey= "fCWjETWnRJRgHiOjCyTyE9C9k0ymlCVK";
     const response = await axios.get(
       `https://api.tomorrow.io/v4/timelines?location=${lat},${long}&fields=temperature,temperatureApparent,temperatureMin,temperatureMax,windSpeed,windDirection,humidity,pressureSeaLevel,uvIndex,weatherCode,precipitationProbability,precipitationType,sunriseTime,sunsetTime,visibility,moonPhase,cloudCover&timesteps=1d&units=imperial&timezone=America/Los_Angeles&apikey=${apikey}`
     );
+
+    const response1 = await axios.get(
+      `https://api.tomorrow.io/v4/timelines?location=${lat},${long}&fields=temperature,temperatureApparent,temperatureMin,temperatureMax,windSpeed,windDirection,humidity,pressureSeaLevel,uvIndex,weatherCode,precipitationProbability,precipitationType,visibility,cloudCover&timesteps=1h&units=imperial&timezone=America/Los_Angeles&apikey=${apikey}`
+    );
   
   
-    res.json({ daily_data: response.data });
+    res.json({ daily_data: response.data, hourly_data: response1.data });
   
   })
 

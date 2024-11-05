@@ -44,6 +44,9 @@ export class SearchFormComponent implements OnInit {
   currentTab: string = "results";
   weatherDataReady = false;
 
+  fetching = false;
+  progress = 0;
+
   validator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const invalid = (control.value || '').trim().length === 0;
@@ -52,6 +55,9 @@ export class SearchFormComponent implements OnInit {
   }
 
   submitted = false;
+
+  dailydata: any;
+  hourlydata: any;
 
   currentTemp!: number;
   weatherCondition!: string;
@@ -102,6 +108,7 @@ export class SearchFormComponent implements OnInit {
 
   async handleSubmit(event: any){
     event.preventDefault();
+    this.startFetch();
     const google_api_key="AIzaSyCKKdlyDWTm4WnlYaX8zoMs0g3dVoMsyc8";
     if(this.form.get('autoDetectControl')?.value){
       const ip_access_token = "baabb679471b9e";
@@ -113,11 +120,15 @@ export class SearchFormComponent implements OnInit {
       const longitude = location[1];
       let coordinates = new URLSearchParams({lat: latitude, long: longitude});
       const weatherresponse = await fetch(`http://localhost:8080/fetchweatherdata?lat=${latitude}&long=${longitude}`, {method: 'get'});
+      this.incrementProgress(70);
       const weatherdata = await weatherresponse.json();
-      const dailydata = weatherdata["daily_data"];
-      console.log(dailydata);
-      this.weatherDataReady = true;
+      this.dailydata = weatherdata["daily_data"];
+      this.hourlydata = weatherdata["hourly_data"];
+      console.log(this.hourlydata);
+      this.completeFetch()
+      setTimeout(()=>{this.weatherDataReady = true;},200)
       this.location = formatted_address;
+      
     }else{
       let street = this.form.get("streetFieldControl")?.value;
       let city = this.form.get("cityFieldControl")?.value;
@@ -134,11 +145,14 @@ export class SearchFormComponent implements OnInit {
       const longitude = location["lng"];
       let coordinates = new URLSearchParams({lat: latitude, long: longitude});
       const weatherresponse = await fetch(`http://localhost:8080/fetchweatherdata?lat=${latitude}&long=${longitude}`, {method: 'get'});
+      this.incrementProgress(70);
       const weatherdata = await weatherresponse.json();
-      const dailydata = weatherdata["daily_data"];
-      console.log(dailydata);
-      this.weatherDataReady = true;
+      this.dailydata = weatherdata["daily_data"];
+      this.hourlydata = weatherdata["hourly_data"];
+      this.completeFetch()
+      setTimeout(()=>{this.weatherDataReady = true;},200)
       this.location = city + ", " + state;
+      
     }
 
   }
@@ -164,5 +178,26 @@ export class SearchFormComponent implements OnInit {
 
     this.currentTab = "results";
     this.weatherDataReady = false;
+  }
+
+  startFetch() {
+    this.fetching = true;
+    this.progress = 0;
+    this.incrementProgress(20);
+  }
+
+  incrementProgress(targetProgress: number) {
+    const incrementInterval = setInterval(() => {
+      if (this.progress < targetProgress) {
+        this.progress += 10; 
+      } else {
+        clearInterval(incrementInterval);
+      }
+    }, 100); 
+  }
+
+  completeFetch() {
+    this.progress = 100;
+    setTimeout(() => {this.fetching = false; }, 200); 
   }
 }
