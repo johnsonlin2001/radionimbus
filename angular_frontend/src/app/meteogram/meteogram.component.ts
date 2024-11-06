@@ -132,7 +132,7 @@ export class MeteogramComponent implements OnInit {
       plotOptions: {
         series: {
           marker: {
-            radius: 2 // Smaller markers for mobile
+            radius: 2 
           }
         },
         column: {
@@ -193,7 +193,7 @@ export class MeteogramComponent implements OnInit {
               }],
               xAxis: [{
                 labels: {
-                  format: '{value:%H}', // Hourly format for mobile
+                  format: '{value:%H}', 
                   style: {
                     fontSize: '8px'
                   }

@@ -2,13 +2,35 @@ import { Component, Input } from '@angular/core';
 import { CommonModule, formatCurrency } from '@angular/common';
 import { TempchartComponent } from '../tempchart/tempchart.component';
 import { MeteogramComponent } from '../meteogram/meteogram.component';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { DetailsPaneComponent } from '../details-pane/details-pane.component';
 
 @Component({
   selector: 'app-weatherresults',
   standalone: true,
-  imports: [CommonModule, TempchartComponent, MeteogramComponent],
+  imports: [CommonModule, TempchartComponent, MeteogramComponent, DetailsPaneComponent],
   templateUrl: './weatherresults.component.html',
-  styleUrl: './weatherresults.component.css'
+  styleUrl: './weatherresults.component.css',
+  animations: [
+    trigger('slideLeftOut', [
+      transition(':enter', [
+        style({ transform: 'translateX(-100%)' }),
+        animate('300ms ease-out', style({ transform: 'translateX(0)' }))
+      ]),
+      transition(':leave', [
+        animate('300ms ease-in', style({ transform: 'translateX(-100%)' }))
+      ])
+    ]),
+    trigger('slideRightIn', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)' }),
+        animate('300ms ease-out', style({ transform: 'translateX(0)' }))
+      ]),
+      transition(':leave', [
+        animate('300ms ease-in', style({ transform: 'translateX(100%)' }))
+      ])
+    ])
+  ]
 })
 export class WeatherresultsComponent {
 
@@ -27,10 +49,29 @@ export class WeatherresultsComponent {
   @Input() location!: string;
 
   isFavorite: boolean = false;
+  showResults = true;
+  showDetailsPane = false;
 
   currentTab: string = "day";
 
   weatherHeadings = ['#', 'Date', 'Status', 'Temp. High (°F)', 'Temp. Low (°F)', 'Wind Speed (mph)'];
+
+  selectedDay: any;
+
+  showDetails(day: any) {
+    this.selectedDay = day;
+    this.showResults = false;
+    setTimeout(() => {
+      this.showDetailsPane = true;
+    }, 350);
+  }
+
+  hideDetailsPane() {
+    this.showDetailsPane = false;
+    setTimeout(() => {
+      this.showResults = true;
+    }, 350); 
+  }
 
   getTemperatureData(dailydata:any){
     let temperatureData = [];

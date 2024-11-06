@@ -1,3 +1,5 @@
+
+<div *ngIf="showResults" @slideLeftOut class="results_section">
 <h2>Forecast at {{location}}</h2>
 
 <div class="d-flex flex-row justify-content-end align-items-center">
@@ -33,7 +35,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let day of dailydata['data']['timelines'][0]['intervals']; let i = index">
+                    <tr *ngFor="let day of dailydata['data']['timelines'][0]['intervals']; let i = index" (click)="showDetails(day)">
                         <td class="align-middle">{{ i + 1 }}</td>
                         <td class="date_row align-middle">{{ formatDate(day['startTime']) }}</td>
                         <td class="align-middle">
@@ -56,4 +58,8 @@
     <div *ngIf="currentTab === 'meteogram'">
       <app-meteogram [hourlyTempData]="getHourlyTempData(hourlydata)['hourlyTempData']" [hourlyHumData]="getHourlyTempData(hourlydata)['hourlyHumData']" [hourlyWindData]="getHourlyTempData(hourlydata)['hourlyWindData']" [hourlyAirData]="getHourlyTempData(hourlydata)['hourlyAirData']"></app-meteogram>
     </div>
+</div>
+</div>
+<div *ngIf="showDetailsPane" @slideRightIn class="details_pane">
+    <app-details-pane [weatherData]="selectedDay" (close)="hideDetailsPane()"></app-details-pane>
 </div>
