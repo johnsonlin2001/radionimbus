@@ -35,7 +35,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let day of dailydata['data']['timelines'][0]['intervals']; let i = index" (click)="showDetails(day)">
+                    <tr *ngFor="let day of dailydata['data']['timelines'][0]['intervals']; let i = index" (click)="showDetails(day, getStatus(day['values']['weatherCode']))">
                         <td class="align-middle">{{ i + 1 }}</td>
                         <td class="date_row align-middle">{{ formatDate(day['startTime']) }}</td>
                         <td class="align-middle">
@@ -61,5 +61,5 @@
 </div>
 </div>
 <div *ngIf="showDetailsPane" @slideRightIn class="details_pane">
-    <app-details-pane [weatherData]="selectedDay" (close)="hideDetailsPane()"></app-details-pane>
+    <app-details-pane [weatherData]="selectedDay" [status]="selectedStatus" [lat]="latitude" [long]="longitude" (close)="hideDetailsPane()"></app-details-pane>
 </div>

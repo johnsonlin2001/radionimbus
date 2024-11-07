@@ -111,7 +111,7 @@
         <div *ngIf="currentTab === 'results'">
             <h3>Results</h3>
             <div *ngIf="weatherDataReady" class="mt-3">
-                <app-weatherresults [location]="location" [dailydata]="dailydata" [hourlydata]="hourlydata"></app-weatherresults>
+                <app-weatherresults [location]="location" [dailydata]="dailydata" [hourlydata]="hourlydata" [latitude]="latitude" [longitude]="longitude"></app-weatherresults>
             </div>
         </div>
 

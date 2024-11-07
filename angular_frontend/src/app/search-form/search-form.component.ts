@@ -70,6 +70,9 @@ export class SearchFormComponent implements OnInit {
   uvIndex!: number;
   location!: string;
 
+  latitude!: string;
+  longitude!: string;
+
   ngOnInit(): void {
 
     this.form.get('autoDetectControl')!.valueChanges.subscribe((checked) => {
@@ -118,6 +121,8 @@ export class SearchFormComponent implements OnInit {
       const location = ipinfo["loc"].split(",");
       const latitude = location[0];
       const longitude = location[1];
+      this.latitude = latitude;
+      this.longitude = longitude;
       let coordinates = new URLSearchParams({lat: latitude, long: longitude});
       const weatherresponse = await fetch(`http://localhost:8080/fetchweatherdata?lat=${latitude}&long=${longitude}`, {method: 'get'});
       this.incrementProgress(70);
@@ -143,6 +148,8 @@ export class SearchFormComponent implements OnInit {
       const location = geodata["results"]["0"]["geometry"]["location"];
       const latitude = location["lat"];
       const longitude = location["lng"];
+      this.latitude = latitude;
+      this.longitude = longitude;
       let coordinates = new URLSearchParams({lat: latitude, long: longitude});
       const weatherresponse = await fetch(`http://localhost:8080/fetchweatherdata?lat=${latitude}&long=${longitude}`, {method: 'get'});
       this.incrementProgress(70);

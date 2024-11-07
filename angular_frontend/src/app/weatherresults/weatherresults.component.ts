@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule, formatCurrency } from '@angular/common';
 import { TempchartComponent } from '../tempchart/tempchart.component';
 import { MeteogramComponent } from '../meteogram/meteogram.component';
@@ -32,10 +32,12 @@ import { DetailsPaneComponent } from '../details-pane/details-pane.component';
     ])
   ]
 })
-export class WeatherresultsComponent {
+export class WeatherresultsComponent{
 
   @Input() dailydata: any;
   @Input() hourlydata: any;
+  @Input() latitude: any;
+  @Input() longitude: any;
 
   @Input() currentTemp!: number;
   @Input() weatherCondition!: string;
@@ -57,10 +59,15 @@ export class WeatherresultsComponent {
   weatherHeadings = ['#', 'Date', 'Status', 'Temp. High (°F)', 'Temp. Low (°F)', 'Wind Speed (mph)'];
 
   selectedDay: any;
+  animateResults = false;
+  selectedStatus: any;
 
-  showDetails(day: any) {
+  showDetails(day: any, status: any) {
+    console.log(day);
+    this.animateResults = true;
     this.selectedDay = day;
     this.showResults = false;
+    this.selectedStatus = status;
     setTimeout(() => {
       this.showDetailsPane = true;
     }, 350);

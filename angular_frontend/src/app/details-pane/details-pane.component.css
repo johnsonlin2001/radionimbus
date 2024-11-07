@@ -1,0 +1,51 @@
+
+table td, table th {
+    padding: 8px !important; 
+}
+
+.details_table {
+    border-top: none; 
+  }
+  
+.details_table th,
+.details_table td {
+border-top: none;
+border-left: none;
+border-right: none; 
+border-top: 1px solid #ccc;
+border-bottom: 1px solid #ccc;
+}
+
+.details_table tr td:first-child {
+    width: 20%;         /* Sets a fixed width for all first-column cells */
+    text-align: left;     /* Aligns text to the left */
+    white-space: nowrap;  /* Prevents wrapping of text in these cells */
+}
+
+.details_table tr:nth-child(odd),  .details_table tr:nth-child(odd) td b{
+    background-color: #e6e6e6; /* A lighter gray than #ccc */
+}
+
+.list_button{
+    background-color: #e6e6e6;
+    color: #797979;
+    border: 1px solid rgb(120, 119, 119);
+    border-radius: 3px;
+    padding: 3px;
+}
+
+.x_button i {
+    font-size: 1.5rem; /* Increase this value to make it bigger */
+    color: black;
+  }
+  
+.x_button {
+padding: 0.5rem; /* Adjust padding for a larger clickable area */
+border: 1px solid rgb(120, 119, 119);
+border-radius: 3px;
+}
+
+.map-container {
+    width: 100%;
+    height: 600px;
+  }
