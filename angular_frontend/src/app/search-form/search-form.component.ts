@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -11,7 +11,6 @@ import { CommonModule, formatCurrency } from '@angular/common';
 import { CitysearchService } from "../citysearch.service"
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { WeatherresultsComponent } from '../weatherresults/weatherresults.component';
-
 
 
 @Component({
@@ -31,7 +30,7 @@ import { WeatherresultsComponent } from '../weatherresults/weatherresults.compon
 })
 export class SearchFormComponent implements OnInit {
   form: FormGroup= new FormGroup({});
-  constructor(private citysearchService: CitysearchService) {
+  constructor(private citysearchService: CitysearchService, private cdr: ChangeDetectorRef) {
     this.form = new FormGroup({
       cityFieldControl: new FormControl('', [this.validator()]),
       stateFieldControl: new FormControl('', [this.validator()]),
@@ -180,6 +179,17 @@ export class SearchFormComponent implements OnInit {
     this.favs = data;
     
   }
+
+  async handleFavsDelete(city: any, state: any, favId: string){
+    const delfav = await fetch(`http://localhost:8080/deletefavorite?city=${city}&state=${state}`, {method: 'delete'});
+    const index = this.favs.findIndex((fav: { _id: string }) => fav._id === favId);
+      if (index > -1) {
+        this.favs.splice(index, 1);
+      }
+
+    this.cdr.detectChanges();
+  }
+
 
   
   handleCitySelect(event: any) {

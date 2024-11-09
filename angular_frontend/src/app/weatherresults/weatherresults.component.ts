@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import { CommonModule, formatCurrency } from '@angular/common';
 import { TempchartComponent } from '../tempchart/tempchart.component';
 import { MeteogramComponent } from '../meteogram/meteogram.component';
@@ -49,8 +49,9 @@ export class WeatherresultsComponent{
   @Input() cloudCover!: string;
   @Input() uvIndex!: number;
   @Input() location!: string;
+  @Input() isFavorite!: boolean;
+  @Output() toggleFavorite = new EventEmitter<boolean>();
 
-  isFavorite: boolean = false;
   showResults = true;
   showDetailsPane = false;
 
@@ -195,6 +196,7 @@ export class WeatherresultsComponent{
 
   async handleFavorite() {
     this.isFavorite = !this.isFavorite;
+    this.toggleFavorite.emit(this.isFavorite);
     const [city, state] = this.location.split(", ").map(part => part.trim());
     if(this.isFavorite){
     const addfav = await fetch(`http://localhost:8080/addfavorites?city=${city}&state=${state}`, {method: 'post'});

@@ -116,9 +116,21 @@
 
         <div *ngIf="currentTab === 'favorites'">
             <h3>Favorites</h3>
-            <div *ngFor="let favorite of favs">
-                <p>{{ favorite.city }}, {{ favorite.state }}</p>
-            </div>
+            <table class="table table-responsive table-hover fav_table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>City</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tr *ngFor="let favorite of favs; let i = index" #row>
+                    <td class="align-middle">{{ i + 1 }}</td>
+                    <td class="align-middle">{{ favorite.city }}</td>
+                    <td class="align-middle">{{ favorite.state }}</td>
+                    <td class="align-middle"><i class="bi bi-trash-fill" (click)="handleFavsDelete(favorite.city, favorite.state, favorite._id)"></i></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
