@@ -17,13 +17,13 @@ border-bottom: 1px solid #ccc;
 }
 
 .details_table tr td:first-child {
-    width: 20%;         /* Sets a fixed width for all first-column cells */
-    text-align: left;     /* Aligns text to the left */
-    white-space: nowrap;  /* Prevents wrapping of text in these cells */
+    width: 20%;        
+    text-align: left;     
+    white-space: nowrap;  
 }
 
 .details_table tr:nth-child(odd),  .details_table tr:nth-child(odd) td b{
-    background-color: #e6e6e6; /* A lighter gray than #ccc */
+    background-color: #e6e6e6; 
 }
 
 .list_button{

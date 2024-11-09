@@ -43,6 +43,7 @@ export class SearchFormComponent implements OnInit {
   suggestions: any[] = [];
   currentTab: string = "results";
   weatherDataReady = false;
+  favs: any;
 
   fetching = false;
   progress = 0;
@@ -107,6 +108,14 @@ export class SearchFormComponent implements OnInit {
           console.error('Error fetching city suggestions:', error);
         }
       );
+    this.handleFavsClick();
+    
+  }
+
+  isFavorite: boolean = false;
+
+  toggleFavorite(isFavorite: boolean) {
+      this.isFavorite = isFavorite;
   }
 
   async handleSubmit(event: any){
@@ -162,6 +171,14 @@ export class SearchFormComponent implements OnInit {
       
     }
 
+  }
+
+  async handleFavsClick(){
+    const favorites = await fetch(`http://localhost:8080/getfavorites`, {method: 'get'});
+    const data = await favorites.json();
+    console.log(data)
+    this.favs = data;
+    
   }
 
   

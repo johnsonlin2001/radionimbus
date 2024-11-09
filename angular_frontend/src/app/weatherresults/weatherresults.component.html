@@ -61,5 +61,5 @@
 </div>
 </div>
 <div *ngIf="showDetailsPane" @slideRightIn class="details_pane">
-    <app-details-pane [weatherData]="selectedDay" [status]="selectedStatus" [lat]="latitude" [long]="longitude" (close)="hideDetailsPane()"></app-details-pane>
+    <app-details-pane [weatherData]="selectedDay" [status]="selectedStatus" [lat]="latitude" [long]="longitude" [location]="location" (close)="hideDetailsPane()"></app-details-pane>
 </div>

@@ -193,15 +193,21 @@ export class WeatherresultsComponent{
     this.currentTab = tab;
   }
 
-  handleFavorite() {
+  async handleFavorite() {
     this.isFavorite = !this.isFavorite;
-    console.log(this.dailydata)
+    const [city, state] = this.location.split(", ").map(part => part.trim());
+    if(this.isFavorite){
+    const addfav = await fetch(`http://localhost:8080/addfavorites?city=${city}&state=${state}`, {method: 'post'});
+    }else{
+    const delfav = await fetch(`http://localhost:8080/deletefavorite?city=${city}&state=${state}`, {method: 'delete'});
+    }
   }
 
   formatDate(dateinput: string): string {
     const date = new Date(dateinput);
     return new Intl.DateTimeFormat('en-US', {weekday: 'long', year: 'numeric', month: 'short', day: '2-digit'}).format(date);
   }
+
 
 
 }

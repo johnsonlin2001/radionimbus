@@ -11,6 +11,7 @@ import { Component, Input, Output, EventEmitter, AfterViewInit, ViewChild, Eleme
 })
 export class DetailsPaneComponent implements AfterViewInit{
   @ViewChild('mapContainer', { static: false }) mapContainer!: ElementRef;
+  @Input() location!: any;
   @Input() weatherData!: any;
   @Input() status!: any;
   @Input() lat!: any;
@@ -19,6 +20,16 @@ export class DetailsPaneComponent implements AfterViewInit{
   @Output() close = new EventEmitter<void>();
 
   private map!: google.maps.Map;
+
+  
+  composeTweet() {
+    const tweet = encodeURIComponent("The temperature in " + this.location + " on " + this.formatDate(this.weatherData['startTime']) + " is " + this.weatherData['values']['temperatureApparent']+"°F" + " and the conditions are "+this.status);
+
+    const hashtags = encodeURIComponent("CSCI571WeatherForecast");
+    const tweetLink = `https://twitter.com/intent/tweet?text=${tweet}&hashtags=${hashtags}`;
+
+    window.open(tweetLink, "_blank", "width=600,height=400");
+  }
   
   ngAfterViewInit() {
     this.initMap();
