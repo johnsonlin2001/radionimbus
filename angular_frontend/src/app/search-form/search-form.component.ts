@@ -173,19 +173,28 @@ export class SearchFormComponent implements OnInit {
   }
 
   async handleFavsClick(){
+    
     const favorites = await fetch(`http://localhost:8080/getfavorites`, {method: 'get'});
     const data = await favorites.json();
-    console.log(data)
     this.favs = data;
     
   }
 
   async handleFavsDelete(city: any, state: any, favId: string){
-    const delfav = await fetch(`http://localhost:8080/deletefavorite?city=${city}&state=${state}`, {method: 'delete'});
     const index = this.favs.findIndex((fav: { _id: string }) => fav._id === favId);
-      if (index > -1) {
-        this.favs.splice(index, 1);
-      }
+    console.log("Index found:", index);
+
+    if (index > -1) {
+      this.favs.splice(index, 1);
+      console.log("Item removed from favs:", this.favs);
+    } else {
+      console.warn("Item not found in favs for deletion");
+    }
+    const delfav = await fetch(`http://localhost:8080/deletefavorite?city=${city}&state=${state}`, {method: 'delete'});
+    
+    this.handleFavsClick();
+
+    console.log(this.favs);
 
     this.cdr.detectChanges();
   }

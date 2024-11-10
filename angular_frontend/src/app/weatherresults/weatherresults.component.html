@@ -3,7 +3,7 @@
 <h2>Forecast at {{location}}</h2>
 
 <div class="d-flex flex-row justify-content-end align-items-center">
-<button type="button" class="btn" (click)="handleFavorite()" style="border: 1px solid black; padding: 2px 4px 2px 4px; ">
+<button type="button" class="btn" (click)="handleFavorite()" style="border: 1px solid black; padding: 0px 4px 0px 4px; ">
     <span style="position: relative; display: inline-block;">
         <i class="bi-star" 
            style="position: absolute; color: black; top: 0; left: 0; font-size: 30px;">
@@ -13,9 +13,11 @@
         </i>
       </span>
 </button>
-<div style="font-size: 1.5rem; border-bottom: 1px solid blue; padding-bottom: 1px;">Details</div>
-<i class="bi bi-chevron-right" style="font-size: 1.5rem; font-weight: 400"></i>
+
+<div style="font-size: 1.2rem; border-bottom: 1px solid blue; padding-bottom: 1px;" (click)="detailsClick()" class="details_div">Details</div>
+<i class="bi bi-chevron-right details_div" style="font-size: 1.5rem; font-weight: 400" (click)="detailsClick()"></i>
 </div>
+
 
 <div class="tab_selectors d-flex flex-row justify-content-end align-items-center mt-3">
     <p class="me-3" (click)="handleTabClick('day')" [class.current]="currentTab === 'day'">Day View</p>

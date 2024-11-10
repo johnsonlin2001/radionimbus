@@ -76,6 +76,7 @@ app.get("/fetchweatherdata", async (req, res) => {
 
 app.post('/addfavorites', async (req, res) => {
   try {
+      const client = new MongoClient(connecturi);
       const city = req.query.city;
 
       const state = req.query.state;
@@ -97,6 +98,7 @@ app.post('/addfavorites', async (req, res) => {
 
 app.delete('/deletefavorite', async (req, res) => {
   try {
+    const client = new MongoClient(connecturi);
     const city = req.query.city;
 
     const state = req.query.state;
@@ -116,6 +118,7 @@ app.delete('/deletefavorite', async (req, res) => {
 
 app.get('/getfavorites', async (req, res) => {
   try {
+    const client = new MongoClient(connecturi);
     await client.connect();
     
     const db = client.db('RadioNimbus');

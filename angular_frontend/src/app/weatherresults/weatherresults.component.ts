@@ -74,6 +74,18 @@ export class WeatherresultsComponent{
     }, 350);
   }
 
+  detailsClick(){
+    if (!this.selectedDay && !this.selectedStatus) {
+      const firstDay = this.dailydata['data']['timelines'][0]['intervals'][0];
+      this.selectedDay = firstDay;
+      this.selectedStatus = this.getStatus(firstDay['values']['weatherCode']);
+    }
+    this.showResults = false;
+    setTimeout(() => {
+      this.showDetailsPane = true;
+    }, 350);
+  }
+
   hideDetailsPane() {
     this.showDetailsPane = false;
     setTimeout(() => {

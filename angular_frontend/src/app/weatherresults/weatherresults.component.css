@@ -52,4 +52,7 @@ text-decoration-color: blue;
 color: blue;
 }
 
+.details_div:hover{
+   cursor: pointer;
+}
   

@@ -42,7 +42,7 @@ export class DetailsPaneComponent implements AfterViewInit{
 
     this.map = new Map(this.mapContainer.nativeElement, {
       center: { lat: parseFloat(this.lat), lng: parseFloat(this.long) },
-      zoom: 8,
+      zoom: 12,
     });
   }
 
