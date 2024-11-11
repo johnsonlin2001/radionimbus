@@ -55,6 +55,7 @@ export class SearchFormComponent implements OnInit {
   }
 
   submitted = false;
+  errorOccured = false;
 
   dailydata: any;
   hourlydata: any;
@@ -117,6 +118,14 @@ export class SearchFormComponent implements OnInit {
       this.isFavorite = isFavorite;
   }
 
+  stateMapping: { [key: string]: string } = {
+    "AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas", "CA": "California", "CO": "Colorado", "CT": "Connecticut", "DE": "Delaware", "FL": "Florida", "GA": "Georgia","HI": "Hawaii", "ID": "Idaho", 
+    "IL": "Illinois", "IN": "Indiana", "IA": "Iowa","KS": "Kansas", "KY": "Kentucky", "LA": "Louisiana", "ME": "Maine", "MD": "Maryland", "MA": "Massachusetts", "MI": "Michigan", "MN": "Minnesota", "MS": "Mississippi",
+    "MO": "Missouri", "MT": "Montana", "NE": "Nebraska", "NV": "Nevada", "NH": "New Hampshire", "NJ": "New Jersey", "NM": "New Mexico", "NY": "New York", "NC": "North Carolina","ND": "North Dakota", 
+    "OH": "Ohio", "OK": "Oklahoma", "OR": "Oregon", "PA": "Pennsylvania", "RI": "Rhode Island", "SC": "South Carolina", "SD": "South Dakota", "TN": "Tennessee","TX": "Texas", "UT": "Utah", "VT": "Vermont", 
+    "VA": "Virginia", "WA": "Washington", "WV": "West Virginia", "WI": "Wisconsin", "WY": "Wyoming"
+  };
+
   async handleSubmit(event: any){
     event.preventDefault();
     this.startFetch();
@@ -143,6 +152,7 @@ export class SearchFormComponent implements OnInit {
       this.location = formatted_address;
       
     }else{
+      try{
       let street = this.form.get("streetFieldControl")?.value;
       let city = this.form.get("cityFieldControl")?.value;
       let state = this.form.get("stateFieldControl")?.value;
@@ -152,6 +162,9 @@ export class SearchFormComponent implements OnInit {
       const googleresponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${URLaddress}&key=${google_api_key}`, {method: 'get'});
 
       const geodata = await googleresponse.json();
+      if (!geodata.results || geodata.results.length === 0) {
+        throw new Error("Invalid address");
+      }
       const formatted_address = geodata["results"]["0"]["formatted_address"];
       const location = geodata["results"]["0"]["geometry"]["location"];
       const latitude = location["lat"];
@@ -166,8 +179,12 @@ export class SearchFormComponent implements OnInit {
       this.hourlydata = weatherdata["hourly_data"];
       this.completeFetch()
       setTimeout(()=>{this.weatherDataReady = true;},200)
-      this.location = city + ", " + state;
-      
+      this.location = city + ", " + this.stateMapping[state];
+      }catch(error){
+        this.completeFetch()
+        this.weatherDataReady = false;
+        this.errorOccured = true;
+      }
     }
 
   }
@@ -221,6 +238,7 @@ export class SearchFormComponent implements OnInit {
 
     this.currentTab = "results";
     this.weatherDataReady = false;
+    this.errorOccured = false;
   }
 
   startFetch() {
