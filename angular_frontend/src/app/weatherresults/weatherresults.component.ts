@@ -211,7 +211,7 @@ export class WeatherresultsComponent{
     this.toggleFavorite.emit(this.isFavorite);
     const [city, state] = this.location.split(", ").map(part => part.trim());
     if(this.isFavorite){
-    const addfav = await fetch(`http://localhost:8080/addfavorites?city=${city}&state=${state}`, {method: 'post'});
+    const addfav = await fetch(`http://localhost:8080/addfavorites?city=${city}&state=${state}&lat=${this.latitude}&long=${this.longitude}`, {method: 'post'});
     }else{
     const delfav = await fetch(`http://localhost:8080/deletefavorite?city=${city}&state=${state}`, {method: 'delete'});
     }

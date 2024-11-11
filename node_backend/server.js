@@ -80,16 +80,18 @@ app.post('/addfavorites', async (req, res) => {
       const city = req.query.city;
 
       const state = req.query.state;
+      const lat = req.query.lat;
+      const long = req.query.long;
       await client.connect();
       db = client.db('RadioNimbus');
 
       const collection = db.collection('favs');
 
-      const result = await collection.insertOne({ city, state });
+      const result = await collection.insertOne({ city, state, lat, long });
 
       await client.close();
       
-      res.status(201).json({ message: 'Favorite added successfully', data: { city, state, _id: result.insertedId } });
+      res.status(201).json({ message: 'Favorite added successfully', data: { city, state,lat, long, _id: result.insertedId } });
   } catch (err) {
       console.error('Error saving favorite:', err);
       res.status(500).json({ error: 'Failed to save favorite' });

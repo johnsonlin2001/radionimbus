@@ -22,7 +22,7 @@
         </div>
         <div class="d-flex mb-1 flex-column flex-lg-row align-items-lg-center px-lg-5">
             <label for="stateDropdown" style="width: 25%;" class="ms-1 ms-lg-5">State<span class="required_star">*</span></label>
-            <select class="form-select" id="stateDropdown" aria-label="State select dropdown" matInput formControlName="stateFieldControl">
+            <select [ngClass]="{'invalid': form.get('stateFieldControl')?.invalid && form.get('stateFieldControl')?.touched}" class="form-select" id="stateDropdown" aria-label="State select dropdown" matInput formControlName="stateFieldControl">
                 <option selected>Select your state</option>
                 <option value="AL">Alabama</option>
                 <option value="AK">Alaska</option>
@@ -116,7 +116,10 @@
 
         <div *ngIf="currentTab === 'favorites'">
             <h3>Favorites</h3>
-            <table class="table table-responsive table-hover fav_table">
+            <div *ngIf="favs.length === 0" class="alert alert-warning mt-3" role="alert">
+                Sorry! No records found.
+            </div>
+            <table *ngIf="favs.length > 0" class="table table-responsive table-hover fav_table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -126,8 +129,8 @@
                 </thead>
                 <tr *ngFor="let favorite of favs; let i = index" #row>
                     <td class="align-middle">{{ i + 1 }}</td>
-                    <td class="align-middle">{{ favorite.city }}</td>
-                    <td class="align-middle">{{ favorite.state }}</td>
+                    <td class="align-middle fav-item" (click)="handleFavListClick(favorite.city, favorite.state, favorite.lat, favorite.long)">{{ favorite.city }}</td>
+                    <td class="align-middle fav-item" (click)="handleFavListClick(favorite.city, favorite.state, favorite.lat, favorite.long)">{{ favorite.state }}</td>
                     <td class="align-middle"><i class="bi bi-trash-fill" (click)="handleFavsDelete(favorite.city, favorite.state, favorite._id)"></i></td>
                 </tr>
             </table>

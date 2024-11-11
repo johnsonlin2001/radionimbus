@@ -243,4 +243,22 @@ export class SearchFormComponent implements OnInit {
     this.progress = 100;
     setTimeout(() => {this.fetching = false; }, 200); 
   }
+
+  async handleFavListClick(city: any, state: any, lat: any, long: any){
+    this.latitude = lat;
+    this.longitude = long;
+    this.currentTab = "results";
+    this.startFetch();
+    const weatherresponse = await fetch(`http://localhost:8080/fetchweatherdata?lat=${lat}&long=${long}`, {method: 'get'});
+    this.incrementProgress(70);
+    const weatherdata = await weatherresponse.json();
+    this.dailydata = weatherdata["daily_data"];
+    this.hourlydata = weatherdata["hourly_data"];
+    console.log(this.hourlydata);
+    this.completeFetch();
+    setTimeout(()=>{this.weatherDataReady = true;},200);
+    this.location = city + ", " + state;
+  }
 }
+
+
