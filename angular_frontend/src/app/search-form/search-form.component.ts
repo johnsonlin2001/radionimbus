@@ -263,6 +263,7 @@ export class SearchFormComponent implements OnInit {
   }
 
   async handleFavListClick(city: any, state: any, lat: any, long: any){
+    this.isFavorite = true;
     this.latitude = lat;
     this.longitude = long;
     this.currentTab = "results";
