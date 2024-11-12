@@ -60,6 +60,8 @@ app.get("/fetchweatherdata", async (req, res) => {
 
 
   let apikey= "fCWjETWnRJRgHiOjCyTyE9C9k0ymlCVK";
+
+  try{
   const response = await axios.get(
     `https://api.tomorrow.io/v4/timelines?location=${lat},${long}&fields=temperature,temperatureApparent,temperatureMin,temperatureMax,windSpeed,windDirection,humidity,pressureSeaLevel,uvIndex,weatherCode,precipitationProbability,precipitationType,sunriseTime,sunsetTime,visibility,moonPhase,cloudCover&timesteps=1d&units=imperial&timezone=America/Los_Angeles&apikey=${apikey}`
   );
@@ -70,6 +72,12 @@ app.get("/fetchweatherdata", async (req, res) => {
 
 
   res.json({ daily_data: response.data, hourly_data: response1.data });
+  }catch(error){
+    if (error.response && error.response.status === 429) {
+      res.status(429).json({ error: "Rate limit exceeded. Please try again later." });
+    }
+
+  }
 
 })
 

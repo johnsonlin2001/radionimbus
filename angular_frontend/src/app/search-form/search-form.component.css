@@ -19,12 +19,12 @@
   border-top: none; 
 }
 
-.fav_table th,
+
 .fav_table td {
 border-top: 1px solid #ccc;
 border-left: none;
 border-right: none; 
-border-bottom: none;
+border-bottom: 1px solid #ccc;
 }
 
 .fav_table td{
@@ -44,4 +44,12 @@ border-bottom: none;
 
 .fav-item:hover {
   color: darkblue; 
+}
+
+.fav_table thead{
+  border-bottom: 1px solid #ccc;;
+}
+
+#auto_detect_checkbox:checked {
+  background-color: orange;
 }

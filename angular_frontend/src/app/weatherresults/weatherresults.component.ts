@@ -50,7 +50,7 @@ export class WeatherresultsComponent{
   @Input() uvIndex!: number;
   @Input() location!: string;
   @Input() isFavorite!: boolean;
-  @Output() toggleFavorite = new EventEmitter<boolean>();
+  @Output() toggleFavorite = new EventEmitter<{ isFavorite: any; city: any; state: any; latitude: any; longitude: any }>();
 
   showResults = true;
   showDetailsPane = false;
@@ -208,8 +208,8 @@ export class WeatherresultsComponent{
 
   async handleFavorite() {
     this.isFavorite = !this.isFavorite;
-    this.toggleFavorite.emit(this.isFavorite);
     const [city, state] = this.location.split(", ").map(part => part.trim());
+    this.toggleFavorite.emit({ isFavorite: this.isFavorite, city, state, latitude: this.latitude, longitude: this.longitude });
     if(this.isFavorite){
     const addfav = await fetch(`http://localhost:8080/addfavorites?city=${city}&state=${state}&lat=${this.latitude}&long=${this.longitude}`, {method: 'post'});
     }else{

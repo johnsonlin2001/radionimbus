@@ -90,7 +90,7 @@ export class SearchFormComponent implements OnInit {
 
     this.form.get('cityFieldControl')!.valueChanges
       .pipe(
-        debounceTime(500),              
+        debounceTime(300),              
         distinctUntilChanged(),         
         switchMap((input) => {
           if (input) {
@@ -114,8 +114,20 @@ export class SearchFormComponent implements OnInit {
 
   isFavorite: boolean = false;
 
-  toggleFavorite(isFavorite: boolean) {
+  toggleFavorite(event: { isFavorite: any; city: any; state: any; latitude: any; longitude: any }) {
+    const { isFavorite, city, state, latitude, longitude } = event;
+
       this.isFavorite = isFavorite;
+      if (isFavorite) {
+        this.favs.push({ city, state, latitude, longitude });
+      } else {
+        const index = this.favs.findIndex((fav: { city: string }) => fav.city === city);
+        console.log("Index found:", index);
+
+        if (index > -1) {
+          this.favs.splice(index, 1);
+        }
+      }
   }
 
   stateMapping: { [key: string]: string } = {
@@ -127,6 +139,7 @@ export class SearchFormComponent implements OnInit {
   };
 
   async handleSubmit(event: any){
+    this.isFavorite = false;
     event.preventDefault();
     this.startFetch();
     const google_api_key="AIzaSyCKKdlyDWTm4WnlYaX8zoMs0g3dVoMsyc8";
@@ -142,15 +155,19 @@ export class SearchFormComponent implements OnInit {
       this.longitude = longitude;
       let coordinates = new URLSearchParams({lat: latitude, long: longitude});
       const weatherresponse = await fetch(`http://localhost:8080/fetchweatherdata?lat=${latitude}&long=${longitude}`, {method: 'get'});
-      this.incrementProgress(70);
-      const weatherdata = await weatherresponse.json();
-      this.dailydata = weatherdata["daily_data"];
-      this.hourlydata = weatherdata["hourly_data"];
-      console.log(this.hourlydata);
-      this.completeFetch()
-      setTimeout(()=>{this.weatherDataReady = true;},200)
-      this.location = formatted_address;
-      
+      if (weatherresponse.status === 429) {
+        this.errorOccured = true;
+        this.completeFetch();
+      }else{
+        this.incrementProgress(70);
+        const weatherdata = await weatherresponse.json();
+        this.dailydata = weatherdata["daily_data"];
+        this.hourlydata = weatherdata["hourly_data"];
+        console.log(this.hourlydata);
+        this.completeFetch()
+        setTimeout(()=>{this.weatherDataReady = true;},200)
+        this.location = formatted_address;
+      }
     }else{
       try{
       let street = this.form.get("streetFieldControl")?.value;
@@ -173,6 +190,10 @@ export class SearchFormComponent implements OnInit {
       this.longitude = longitude;
       let coordinates = new URLSearchParams({lat: latitude, long: longitude});
       const weatherresponse = await fetch(`http://localhost:8080/fetchweatherdata?lat=${latitude}&long=${longitude}`, {method: 'get'});
+      if (weatherresponse.status === 429) {
+        this.errorOccured = true;
+        throw new Error("Rate limit exceeded. Please try again later.");
+      }
       this.incrementProgress(70);
       const weatherdata = await weatherresponse.json();
       this.dailydata = weatherdata["daily_data"];
@@ -203,9 +224,6 @@ export class SearchFormComponent implements OnInit {
 
     if (index > -1) {
       this.favs.splice(index, 1);
-      console.log("Item removed from favs:", this.favs);
-    } else {
-      console.warn("Item not found in favs for deletion");
     }
     const delfav = await fetch(`http://localhost:8080/deletefavorite?city=${city}&state=${state}`, {method: 'delete'});
     
@@ -239,6 +257,7 @@ export class SearchFormComponent implements OnInit {
     this.currentTab = "results";
     this.weatherDataReady = false;
     this.errorOccured = false;
+    this.isFavorite = false;
   }
 
   startFetch() {
@@ -250,7 +269,7 @@ export class SearchFormComponent implements OnInit {
   incrementProgress(targetProgress: number) {
     const incrementInterval = setInterval(() => {
       if (this.progress < targetProgress) {
-        this.progress += 10; 
+        this.progress += 20; 
       } else {
         clearInterval(incrementInterval);
       }
