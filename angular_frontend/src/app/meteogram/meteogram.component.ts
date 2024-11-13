@@ -39,7 +39,7 @@ export class MeteogramComponent implements OnInit {
             //Meteogram.prototype.drawBlocksForWindArrows(chart);
           }
         },
-        height: 400, // Adjust for mobile using responsive rules below
+        height: 400, 
         spacingTop: 10,
         spacingRight: 10,
         spacingBottom: 15,
@@ -59,7 +59,7 @@ export class MeteogramComponent implements OnInit {
           format: '{value:%H}',
           align: 'center',
           style: {
-            fontSize: '10px' // Smaller labels for narrow screens
+            fontSize: '10px' 
           }
         },
         crosshair: true
@@ -145,71 +145,6 @@ export class MeteogramComponent implements OnInit {
             }
           }
         }
-      },
-      responsive: {
-        rules: [
-          {
-            condition: {
-              maxWidth: 480 // Apply rules on mobile screens
-            },
-            chartOptions: {
-              chart: {
-                height: 300 // Reduce height for mobile
-              },
-              yAxis: [{
-                title: {
-                  text: null
-                },
-                labels: {
-                  format: '{value}°',
-                  style: {
-                    fontSize: '8px'
-                  }
-                }
-              }, {
-                title: {
-                  text: null
-                },
-                labels: {
-                  enabled: false
-                }
-              }, {
-                title: {
-                  text: null
-                },
-                labels: {
-                  enabled: false
-                }
-              }, {
-                title: {
-                  text: null
-                },
-                labels: {
-                  format: '{value} inHg',
-                  style: {
-                    fontSize: '8px'
-                  }
-                }
-              }],
-              xAxis: [{
-                labels: {
-                  format: '{value:%H}', 
-                  style: {
-                    fontSize: '8px'
-                  }
-                }
-              }],
-              tooltip: {
-                style: {
-                  fontSize: '10px'
-                }
-              },
-              legend: {
-                enabled: false
-              }
-            }
-          }
-        ]
       },
       series: [{
         name: 'Temperature',

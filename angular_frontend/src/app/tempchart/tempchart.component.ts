@@ -29,10 +29,6 @@ export class TempchartComponent implements OnInit {
         zooming: {
           type: 'x'
         },
-        scrollablePlotArea: {
-          minWidth: 600,
-          scrollPositionX: 1
-        }
       },
       title: {
         text: 'Temperature Ranges (Min, Max)'

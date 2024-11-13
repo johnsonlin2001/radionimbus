@@ -9,27 +9,13 @@ const connecturi = "mongodb+srv://johnsonlin2001:Aucklandmogel1@cluster0.3b69l.m
 const client = new MongoClient(connecturi);
 let db;
 
-async function run() {
-  try {
-    const database = client.db('sample_mflix');
-    const movies = database.collection('movies');
-    // Query for a movie that has the title 'Back to the Future'
-    const query = { title: 'Back to the Future' };
-    const movie = await movies.findOne(query);
-    console.log(movie);
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
 
 app.use(cors());
-const PLACES_API_KEY = 'AIzaSyABWuX271CinKRn3VBpNj1VX1h1qrKEHyA'; // Replace with your API key
+const PLACES_API_KEY = 'AIzaSyABWuX271CinKRn3VBpNj1VX1h1qrKEHyA'; 
 
-// Default route
+
 app.get('/', (req, res) => {
-  res.send('Hello from App Engine!');
+  res.send('Radio Nimbus Server');
 });
 
 app.get('/places', async (req, res) => {
@@ -134,10 +120,10 @@ app.get('/getfavorites', async (req, res) => {
     const db = client.db('RadioNimbus');
     const collection = db.collection('favs');
 
-    // Fetch all documents in the 'favs' collection
+    
     const favorites = await collection.find({}).toArray();
     
-    res.status(200).json(favorites); // Send the fetched data as JSON
+    res.status(200).json(favorites); 
     await client.close()
   } catch (err) {
     console.error('Error fetching favorites:', err);

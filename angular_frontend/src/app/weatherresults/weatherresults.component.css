@@ -27,13 +27,7 @@ margin-bottom: -1px;
 z-index: 1;
 }
 
-@media (max-width: 576px) {
-    .tab_selectors p.active {
-        margin-bottom: -10px;
 
-
-    }
-}
 
 .weather_table {
     border-top: none; 
@@ -55,5 +49,25 @@ cursor: pointer;
 
 .details_div:hover{
    cursor: pointer;
+}
+
+@media (max-width: 576px) { 
+    .tab_selectors p {
+        font-size: 0.85rem;
+        margin-right: 0.5rem;
+    }
+}
+
+.location_heading{
+    font-size: 26px;
+}
+
+@media (max-width: 576px) {
+    .tab_selectors p.active {
+        margin-bottom: -10px;
+    }
+    .location_heading{
+        font-size: 20px;
+    }
 }
   

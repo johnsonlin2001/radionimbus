@@ -1,6 +1,6 @@
 <div class="container d-flex mt-3">   
     <form [formGroup]="form" class="weather_search_form col-md-12 col-12 col-lg-12 mx-auto px-2">
-        <h1 style="text-align: center;">Weather Search ⛅</h1>
+        <h1 style="text-align: center; font-size: 38px;">Weather Search ⛅</h1>
         <div class="d-flex mb-1 flex-column flex-lg-row align-items-lg-center px-lg-5">
             <label for="streetfield" style="width: 25%;" class="ms-1 ms-lg-5">Street<span class="required_star">*</span></label>
             <input type="text" class="form-control flex-grow-1 me-lg-5" id="streetfield" formControlName="streetFieldControl" [ngClass]="{'invalid': form.get('streetFieldControl')?.invalid && (form.get('streetFieldControl')?.touched || submitted)}">
