@@ -129,6 +129,31 @@ app.get('/getfavorites', async (req, res) => {
   }
 });
 
+app.get('/checkfavs', async (req, res) => {
+  const city = req.query.city;
+  const state = req.query.state; 
+
+  try {
+    const client = new MongoClient(connecturi);
+    await client.connect();
+
+    const db = client.db('RadioNimbus');
+    const collection = db.collection('favs');
+
+    const query = {"city": city, "state": state}; 
+
+    const document = await collection.findOne(query);
+    res.status(200).json({exists: document !== null});
+
+
+  } catch(err){
+    console.log(err);
+  } finally{
+    await client.close();
+  }
+
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'radionimbus', 'browser', 'index.html'));
 });
