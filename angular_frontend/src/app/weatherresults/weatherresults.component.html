@@ -1,5 +1,5 @@
 
-<div *ngIf="showResults" @slideLeftOut class="results_section">
+<div *ngIf="showResults" @slideLeft class="results_section">
 <h2 style="text-align: center; font-weight: 600;" class="location_heading">Forecast at {{location}}</h2>
 
 <div class="d-flex flex-row justify-content-end align-items-center">
@@ -20,8 +20,8 @@
 
 
 <div class="tab_selectors d-flex flex-row justify-content-end align-items-center mt-3">
-    <p class="me-3" (click)="handleTabClick('day')" [class.current]="currentTab === 'day'">Day View</p>
-    <p class="me-3" (click)="handleTabClick('chart')" [class.current]="currentTab === 'chart'">Daily Temp. Chart</p>
+    <p class="me-1" (click)="handleTabClick('day')" [class.current]="currentTab === 'day'">Day View</p>
+    <p class="me-1" (click)="handleTabClick('chart')" [class.current]="currentTab === 'chart'">Daily Temp. Chart</p>
     <p (click)="handleTabClick('meteogram')" [class.current]="currentTab === 'meteogram'">Meteogram</p>
 </div>
 
@@ -62,6 +62,6 @@
     </div>
 </div>
 </div>
-<div *ngIf="showDetailsPane" @slideRightIn class="details_pane">
+<div *ngIf="showDetailsPane" @slideRight class="details_pane">
     <app-details-pane [weatherData]="selectedDay" [status]="selectedStatus" [lat]="latitude" [long]="longitude" [location]="location" (close)="hideDetailsPane()"></app-details-pane>
 </div>

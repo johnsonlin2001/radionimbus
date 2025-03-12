@@ -10,7 +10,7 @@ import { Component, Input, Output, EventEmitter, AfterViewInit, ViewChild, Eleme
   styleUrl: './details-pane.component.css', 
 })
 export class DetailsPaneComponent implements AfterViewInit{
-  @ViewChild('mapContainer', { static: false }) mapContainer!: ElementRef;
+  @ViewChild('mapDiv', { static: false }) mapDiv!: ElementRef;
   @Input() location!: any;
   @Input() weatherData!: any;
   @Input() status!: any;
@@ -28,7 +28,7 @@ export class DetailsPaneComponent implements AfterViewInit{
     const hashtags = encodeURIComponent("CSCI571WeatherForecast");
     const tweetLink = `https://twitter.com/intent/tweet?text=${tweet}&hashtags=${hashtags}`;
 
-    window.open(tweetLink, "_blank", "width=600,height=400");
+    window.open(tweetLink, "_blank", "width=650,height=450");
   }
   
   ngAfterViewInit() {
@@ -40,9 +40,14 @@ export class DetailsPaneComponent implements AfterViewInit{
   private async initMap(): Promise<void> {
     const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
 
-    this.map = new Map(this.mapContainer.nativeElement, {
+    this.map = new Map(this.mapDiv.nativeElement, {
       center: { lat: parseFloat(this.lat), lng: parseFloat(this.long) },
       zoom: 12,
+    });
+
+    new google.maps.Marker({
+      position: { lat: parseFloat(this.lat), lng: parseFloat(this.long) },
+      map: this.map,
     });
   }
 

@@ -12,7 +12,7 @@ import { DetailsPaneComponent } from '../details-pane/details-pane.component';
   templateUrl: './weatherresults.component.html',
   styleUrl: './weatherresults.component.css',
   animations: [
-    trigger('slideLeftOut', [
+    trigger('slideLeft', [
       transition(':enter', [
         style({ transform: 'translateX(-100%)' }),
         animate('300ms ease-out', style({ transform: 'translateX(0)' }))
@@ -21,7 +21,7 @@ import { DetailsPaneComponent } from '../details-pane/details-pane.component';
         animate('300ms ease-in', style({ transform: 'translateX(-100%)' }))
       ])
     ]),
-    trigger('slideRightIn', [
+    trigger('slideRight', [
       transition(':enter', [
         style({ transform: 'translateX(100%)' }),
         animate('300ms ease-out', style({ transform: 'translateX(0)' }))
@@ -64,7 +64,6 @@ export class WeatherresultsComponent{
   selectedStatus: any;
 
   showDetails(day: any, status: any) {
-    console.log(day);
     this.animateResults = true;
     this.selectedDay = day;
     this.showResults = false;
@@ -211,9 +210,9 @@ export class WeatherresultsComponent{
     const [city, state] = this.location.split(", ").map(part => part.trim());
     this.toggleFavorite.emit({ isFavorite: this.isFavorite, city, state, latitude: this.latitude, longitude: this.longitude });
     if(this.isFavorite){
-    const addfav = await fetch(`http://localhost:8080/addfavorites?city=${city}&state=${state}&lat=${this.latitude}&long=${this.longitude}`, {method: 'post'});
+    const addfav = await fetch(`/addfavorites?city=${city}&state=${state}&lat=${this.latitude}&long=${this.longitude}`, {method: 'post'});
     }else{
-    const delfav = await fetch(`http://localhost:8080/deletefavorite?city=${city}&state=${state}`, {method: 'delete'});
+    const delfav = await fetch(`/deletefavorite?city=${city}&state=${state}`, {method: 'delete'});
     }
   }
 

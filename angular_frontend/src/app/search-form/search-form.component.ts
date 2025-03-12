@@ -49,8 +49,8 @@ export class SearchFormComponent implements OnInit {
 
   validator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const invalid = (control.value || '').trim().length === 0;
-      return invalid ? { val_error: true } : null;
+      const invalid_field = (control.value || '').trim().length === 0;
+      return invalid_field ? { error: true } : null;
     };
   }
 
@@ -89,10 +89,7 @@ export class SearchFormComponent implements OnInit {
     });
 
     this.form.get('cityFieldControl')!.valueChanges
-      .pipe(
-        debounceTime(300),              
-        distinctUntilChanged(),         
-        switchMap((input) => {
+      .pipe(debounceTime(300),distinctUntilChanged(),switchMap((input) => {
           if (input) {
             return this.citysearchService.getCitySuggestions(input); 
           } else {
@@ -103,9 +100,6 @@ export class SearchFormComponent implements OnInit {
       .subscribe(
         (suggestions) => {
           this.suggestions = suggestions; 
-        },
-        (error) => {
-          console.error('Error fetching city suggestions:', error);
         }
       );
     this.handleFavsClick();
@@ -122,7 +116,6 @@ export class SearchFormComponent implements OnInit {
         this.favs.push({ city, state, latitude, longitude });
       } else {
         const index = this.favs.findIndex((fav: { city: string }) => fav.city === city);
-        console.log("Index found:", index);
 
         if (index > -1) {
           this.favs.splice(index, 1);
@@ -154,7 +147,7 @@ export class SearchFormComponent implements OnInit {
       this.latitude = latitude;
       this.longitude = longitude;
       let coordinates = new URLSearchParams({lat: latitude, long: longitude});
-      const weatherresponse = await fetch(`http://localhost:8080/fetchweatherdata?lat=${latitude}&long=${longitude}`, {method: 'get'});
+      const weatherresponse = await fetch(`/fetchweatherdata?lat=${latitude}&long=${longitude}`, {method: 'get'});
       if (weatherresponse.status === 429) {
         this.errorOccured = true;
         this.completeFetch();
@@ -163,7 +156,6 @@ export class SearchFormComponent implements OnInit {
         const weatherdata = await weatherresponse.json();
         this.dailydata = weatherdata["daily_data"];
         this.hourlydata = weatherdata["hourly_data"];
-        console.log(this.hourlydata);
         this.completeFetch()
         setTimeout(()=>{this.weatherDataReady = true;},200)
         this.location = formatted_address;
@@ -189,7 +181,7 @@ export class SearchFormComponent implements OnInit {
       this.latitude = latitude;
       this.longitude = longitude;
       let coordinates = new URLSearchParams({lat: latitude, long: longitude});
-      const weatherresponse = await fetch(`http://localhost:8080/fetchweatherdata?lat=${latitude}&long=${longitude}`, {method: 'get'});
+      const weatherresponse = await fetch(`/fetchweatherdata?lat=${latitude}&long=${longitude}`, {method: 'get'});
       if (weatherresponse.status === 429) {
         this.errorOccured = true;
         throw new Error("Rate limit exceeded. Please try again later.");
@@ -212,7 +204,7 @@ export class SearchFormComponent implements OnInit {
 
   async handleFavsClick(){
     
-    const favorites = await fetch(`http://localhost:8080/getfavorites`, {method: 'get'});
+    const favorites = await fetch(`/getfavorites`, {method: 'get'});
     const data = await favorites.json();
     this.favs = data;
     
@@ -220,16 +212,14 @@ export class SearchFormComponent implements OnInit {
 
   async handleFavsDelete(city: any, state: any, favId: string){
     const index = this.favs.findIndex((fav: { _id: string }) => fav._id === favId);
-    console.log("Index found:", index);
 
     if (index > -1) {
       this.favs.splice(index, 1);
     }
-    const delfav = await fetch(`http://localhost:8080/deletefavorite?city=${city}&state=${state}`, {method: 'delete'});
+    const delfav = await fetch(`/deletefavorite?city=${city}&state=${state}`, {method: 'delete'});
     
     this.handleFavsClick();
 
-    console.log(this.favs);
 
     this.cdr.detectChanges();
   }
@@ -267,13 +257,12 @@ export class SearchFormComponent implements OnInit {
   }
 
   incrementProgress(targetProgress: number) {
-    const incrementInterval = setInterval(() => {
+    const Interval = setInterval(() => {
       if (this.progress < targetProgress) {
         this.progress += 20; 
       } else {
-        clearInterval(incrementInterval);
-      }
-    }, 100); 
+        clearInterval(Interval);
+      }}, 100); 
   }
 
   completeFetch() {
@@ -287,12 +276,11 @@ export class SearchFormComponent implements OnInit {
     this.longitude = long;
     this.currentTab = "results";
     this.startFetch();
-    const weatherresponse = await fetch(`http://localhost:8080/fetchweatherdata?lat=${lat}&long=${long}`, {method: 'get'});
+    const weatherresponse = await fetch(`/fetchweatherdata?lat=${lat}&long=${long}`, {method: 'get'});
     this.incrementProgress(70);
     const weatherdata = await weatherresponse.json();
     this.dailydata = weatherdata["daily_data"];
     this.hourlydata = weatherdata["hourly_data"];
-    console.log(this.hourlydata);
     this.completeFetch();
     setTimeout(()=>{this.weatherDataReady = true;},200);
     this.location = city + ", " + state;

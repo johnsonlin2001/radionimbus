@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require("cors")
+const path = require('path');
 const app = express();
 const { MongoClient } = require("mongodb");
 
@@ -13,9 +14,10 @@ let db;
 app.use(cors());
 const PLACES_API_KEY = 'AIzaSyABWuX271CinKRn3VBpNj1VX1h1qrKEHyA'; 
 
+app.use(express.static(path.join(__dirname, 'radionimbus', 'browser')));
 
 app.get('/', (req, res) => {
-  res.send('Radio Nimbus Server');
+  res.sendFile(path.join(__dirname, 'radionimbus', 'browser', 'index.html'));
 });
 
 app.get('/places', async (req, res) => {
@@ -33,8 +35,7 @@ app.get('/places', async (req, res) => {
       res.json(cityStateList);
       
     } catch (error) {
-      console.error('Error fetching Places data:', error);
-      res.status(500).send('Error fetching Places data');
+      console.error(error);
     }
   });
 
@@ -60,7 +61,7 @@ app.get("/fetchweatherdata", async (req, res) => {
   res.json({ daily_data: response.data, hourly_data: response1.data });
   }catch(error){
     if (error.response && error.response.status === 429) {
-      res.status(429).json({ error: "Rate limit exceeded. Please try again later." });
+      res.status(429).json({ error: "Rate limit exceeded." });
     }
 
   }
@@ -85,10 +86,9 @@ app.post('/addfavorites', async (req, res) => {
 
       await client.close();
       
-      res.status(201).json({ message: 'Favorite added successfully', data: { city, state,lat, long, _id: result.insertedId } });
+      res.status(200).json({ message: 'Favorite added!', data: { city, state,lat, long, _id: result.insertedId } });
   } catch (err) {
-      console.error('Error saving favorite:', err);
-      res.status(500).json({ error: 'Failed to save favorite' });
+      console.error(err);
   }
 });
 
@@ -107,8 +107,7 @@ app.delete('/deletefavorite', async (req, res) => {
     await client.close();
 
   } catch (err) {
-      console.error('Error deleting favorite:', err);
-      res.status(500).json({ error: 'Failed to delete favorite' });
+      console.error(err);
   }
 });
 
@@ -126,9 +125,12 @@ app.get('/getfavorites', async (req, res) => {
     res.status(200).json(favorites); 
     await client.close()
   } catch (err) {
-    console.error('Error fetching favorites:', err);
-    res.status(500).json({ error: 'Failed to fetch favorites' });
+    console.error(err);
   }
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'radionimbus', 'browser', 'index.html'));
 });
 
 
@@ -141,6 +143,5 @@ app.listen(PORT, () => {
 
 process.on('SIGINT', async () => {
   await client.close();
-  console.log('MongoDB connection closed');
   process.exit(0);
 });

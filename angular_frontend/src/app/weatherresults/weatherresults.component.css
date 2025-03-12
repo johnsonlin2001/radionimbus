@@ -54,7 +54,9 @@ cursor: pointer;
 @media (max-width: 576px) { 
     .tab_selectors p {
         font-size: 0.85rem;
-        margin-right: 0.5rem;
+        margin-right: 0.2rem;
+        padding-left: 4px;
+        padding-right: 4px;
     }
 }
 
