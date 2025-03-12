@@ -130,8 +130,8 @@ app.get('/getfavorites', async (req, res) => {
 });
 
 app.get('/checkfavs', async (req, res) => {
-  const city = req.query.city;
-  const state = req.query.state; 
+  const lat = req.query.lat;
+  const long = req.query.long; 
 
   try {
     const client = new MongoClient(connecturi);
@@ -140,7 +140,7 @@ app.get('/checkfavs', async (req, res) => {
     const db = client.db('RadioNimbus');
     const collection = db.collection('favs');
 
-    const query = {"city": city, "state": state}; 
+    const query = {"lat": lat, "long": long}; 
 
     const document = await collection.findOne(query);
     res.status(200).json({exists: document !== null});

@@ -147,6 +147,13 @@ export class SearchFormComponent implements OnInit {
       this.latitude = latitude;
       this.longitude = longitude;
       let coordinates = new URLSearchParams({lat: latitude, long: longitude});
+      let exists = await fetch(`/checkfavs?lat=${latitude}&long=${longitude}`, {method: 'get'});
+      let exists1 = await exists.json();
+      exists1 = exists1["exists"] ;  
+      if(exists1){
+        this.isFavorite = true;
+      }
+      console.log(`exists${exists}`);
       const weatherresponse = await fetch(`/fetchweatherdata?lat=${latitude}&long=${longitude}`, {method: 'get'});
       if (weatherresponse.status === 429) {
         this.errorOccured = true;
@@ -181,6 +188,12 @@ export class SearchFormComponent implements OnInit {
       this.latitude = latitude;
       this.longitude = longitude;
       let coordinates = new URLSearchParams({lat: latitude, long: longitude});
+      let exists = await fetch(`/checkfavs?lat=${latitude}&long=${longitude}`, {method: 'get'});
+      let exists1 = await exists.json();
+      exists1 = exists1["exists"] ;  
+      if(exists1){
+        this.isFavorite = true;
+      }
       const weatherresponse = await fetch(`/fetchweatherdata?lat=${latitude}&long=${longitude}`, {method: 'get'});
       if (weatherresponse.status === 429) {
         this.errorOccured = true;
