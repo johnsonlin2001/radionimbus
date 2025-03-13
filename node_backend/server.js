@@ -5,17 +5,20 @@ const path = require('path');
 const app = express();
 const { MongoClient } = require("mongodb");
 
-const connecturi = "mongodb+srv://johnsonlin2001:Aucklandmogel1@cluster0.3b69l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+require("dotenv").config();
+
+const connecturi = process.env.connecturi; 
 
 const client = new MongoClient(connecturi);
 let db;
 
 
 app.use(cors());
-const PLACES_API_KEY = 'AIzaSyABWuX271CinKRn3VBpNj1VX1h1qrKEHyA'; 
+const PLACES_API_KEY = process.env.PLACES_API_KEY;
+let apikey= process.env.api_key; 
+console.log(PLACES_API_KEY);
 
 app.use(express.static(path.join(__dirname, 'radionimbus', 'browser')));
-
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'radionimbus', 'browser', 'index.html'));
 });
@@ -45,8 +48,6 @@ app.get("/fetchweatherdata", async (req, res) => {
   const long = req.query.long;
 
 
-
-  let apikey= "fCWjETWnRJRgHiOjCyTyE9C9k0ymlCVK";
 
   try{
   const response = await axios.get(
